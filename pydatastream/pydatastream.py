@@ -179,7 +179,7 @@ class Datastream(object):
         rd.Options = options
         rd.Tag = tag
 
-        self.last_response = self.client.service.RequestRecord(self.userdata, rd, 0)
+        self.last_response = self.client.service.RequestRecordAsXml(self.userdata, rd, 0)[0]
 
         return self.last_response
 
@@ -224,7 +224,7 @@ class Datastream(object):
 
             req.RequestData.append(rd)
 
-        return self.client.service.RequestRecords(self.userdata, req, 0)[0]
+        return self.client.service.RequestRecordsAsXml(self.userdata, req, 0)[0][0]
 
     #################################################################################
     def status(self, record=None):
@@ -272,7 +272,7 @@ class Datastream(object):
     @staticmethod
     def extract_data(raw):
         """Extracts data from the raw response and returns it as a dictionary."""
-        return {x[0]: x[1] for x in raw['Fields'][0]}
+        return {x[0]: x[1] for x in raw['Fields']}
 
     def parse_record(self, raw, indx=0):
         """Parse raw data (that is retrieved by "request") and return pandas.DataFrame.
